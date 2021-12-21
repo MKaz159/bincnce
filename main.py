@@ -1,10 +1,14 @@
 import os
 import pprint
-from config import api_key, api_secret, closing_price_index, closing_time_index
 from binance.client import Client
 from datetime import datetime, timedelta
-
-client = Client(api_key, api_secret)
+from dotenv import load_dotenv
+load_dotenv()
+API_KEY = os.getenv('API_KEY')
+API_SECRET = os.getenv('API_SECRET')
+client = Client(API_KEY, API_SECRET)
+closing_time_index = 6
+closing_price_index = 4
 
 
 def GetHistoricalData(howLong, ticker):
