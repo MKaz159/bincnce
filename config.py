@@ -1,4 +1,0 @@
-api_key = 'Ipz7Za4ZlHrwopUFQGlQT586QidC3LK570LsCqC9C5spqpyoE3yACtDPPsES7GQX'
-api_secret = '5FoUCcaQpvVU5qH65BkPQX232Qgahy91hFt8YxMtg2EfNgT8CrJm6Ca9wwlW21O1'
-closing_time_index = 6
-closing_price_index = 4
