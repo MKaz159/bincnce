@@ -3,6 +3,7 @@ import pprint
 from binance.client import Client
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
+
 load_dotenv()
 API_KEY = os.getenv('API_KEY')
 API_SECRET = os.getenv('API_SECRET')
@@ -11,39 +12,33 @@ closing_time_index = 6
 closing_price_index = 4
 
 
-def GetHistoricalData(howLong, ticker):
-    """
-    :param ticker:
-    :param howLong:
-    :return:
-    list of list containing stock details (prices)
-    """
-    howLong = howLong
-    # Calculate the timestamps for the binance api function
-    untilThisDate = datetime.now()
-    print(untilThisDate)
-    sinceThisDate = untilThisDate - timedelta(days=howLong)
-    print(sinceThisDate)
-    # Execute the query from binance - timestamps must be converted to strings !
-    candle = client.get_historical_klines(str(ticker), Client.KLINE_INTERVAL_1WEEK, str(sinceThisDate),
-                                          str(untilThisDate))
-    return candle
+class Stock:
+    def __init__(self, ticker, howlong):
+        self.ticker = ticker
+        self.howlong = howlong
 
-
-def GetMomentum(candle_data, i):
-    """
-    :param candle_data:
-    :param i:
-    :return:
-    Momentum Value & Closing TimeStamp
-    """
-    closing_price = float(candle_data[i][closing_price_index])
-    closing_price_weeklater = float(candle_data[i + 1][closing_price_index])
-    momentum = closing_price - closing_price_weeklater
-    time_stamp = candle_data[i + 1][closing_time_index]
-    time_stamp = str((datetime.fromtimestamp(int(time_stamp / 1000))))
-    time_stamp = time_stamp.split()
-    return momentum, time_stamp[0]
+    def get_axis_for_ohclv(self):
+        list_momentum = []
+        list_closing_times = []
+        howLong = self.howlong
+        ticker = self.ticker
+        # Calculate the timestamps for the binance api function
+        untilThisDate = datetime.now()
+        print(untilThisDate)
+        sinceThisDate = untilThisDate - timedelta(days=howLong)
+        print(sinceThisDate)
+        # Execute the query from binance - timestamps must be converted to strings !
+        candle = client.get_historical_klines(str(ticker), Client.KLINE_INTERVAL_1WEEK, str(sinceThisDate),
+                                              str(untilThisDate))
+        i = 0
+        closing_price = float([i][closing_price_index])
+        closing_price_weeklater = float([i + 1][closing_price_index])
+        momentum = closing_price - closing_price_weeklater
+        time_stamp = [i + 1][closing_time_index]
+        time_stamp = str((datetime.fromtimestamp(int(time_stamp / 1000))))
+        time_stamp = time_stamp.split()
+        date = time_stamp[0]
+        for length_of_weeks in range(len(candle) - 1):
 
 
 def GetStockPricing(candle_data):
