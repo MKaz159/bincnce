@@ -3,7 +3,8 @@ import pprint
 from binance.client import Client
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-#from tkinter import
+
+# from tkinter import
 
 load_dotenv()
 API_KEY = os.getenv('API_KEY')
@@ -40,7 +41,8 @@ class Stock:
             print(f'unable to retrieve data for {self.ticker} ')
             return None
 
-    def GetMomentum(self, candle, week_number):  # Getting the DataBase and the week number
+    @staticmethod
+    def GetMomentum(candle, week_number):  # Getting the DataBase and the week number
         closing_price = float(candle[week_number][closing_price_index])
         closing_price_weeklater = float(candle[week_number + 1][closing_price_index])
         momentum = closing_price - closing_price_weeklater
