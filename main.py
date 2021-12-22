@@ -41,23 +41,23 @@ class Stock:
             print(f'unable to retrieve data for {self.ticker} ')
             return None
 
-    @staticmethod
-    def GetMomentum(candle, week_number):  # Getting the DataBase and the week number
-        closing_price = float(candle[week_number][closing_price_index])
-        closing_price_weeklater = float(candle[week_number + 1][closing_price_index])
-        momentum = closing_price - closing_price_weeklater
-        time_stamp = candle[week_number + 1][closing_time_index]
-        time_stamp = str((datetime.fromtimestamp(int(time_stamp / 1000))))
-        time_stamp = time_stamp.split()
-        return momentum, time_stamp[0]
+
+def GetMomentum(candle, week_number):  # Getting the DataBase and the week number
+    closing_price = float(candle[week_number][closing_price_index])
+    closing_price_weeklater = float(candle[week_number + 1][closing_price_index])
+    momentum = closing_price - closing_price_weeklater
+    time_stamp = candle[week_number + 1][closing_time_index]
+    time_stamp = str((datetime.fromtimestamp(int(time_stamp / 1000))))
+    time_stamp = time_stamp.split()
+    return momentum, time_stamp[0]
 
 
-def Get_axis_graph(CoinStock, candle):
+def Get_axis_graph(candle):
     list_momentum = []
     list_closing_times = []
     i = 0
     for week in range(len(candle) - 1):
-        momentum, close_time = CoinStock.GetMomentum(candle, i)
+        momentum, close_time = GetMomentum(candle, i)
         list_momentum.append(momentum)
         list_closing_times.append(close_time)
         i += 1
@@ -72,7 +72,7 @@ def main():
     ETH = Stock('ETHUSDT', 365)
     list_of_coins.append(BTC)
 
-    BTC_x, BTC_y = Get_axis_graph(BTC, BTC.GetHistoricalData())
+    BTC_x, BTC_y = Get_axis_graph(BTC.GetHistoricalData())
 
 
 if __name__ == '__main__':
