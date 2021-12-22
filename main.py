@@ -3,6 +3,7 @@ import pprint
 from binance.client import Client
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
+#from tkinter import
 
 load_dotenv()
 API_KEY = os.getenv('API_KEY')
@@ -17,7 +18,7 @@ class Stock:
         self.ticker = ticker
         self.howlong = howlong
 
-    def GetHistoricalData(self):
+    def GetHistoricalData(self):  # Retrieving the candle database
         """
         :param ticker:
         :param howLong:
@@ -31,11 +32,15 @@ class Stock:
         sinceThisDate = untilThisDate - timedelta(days=howLong)
         print(sinceThisDate)
         # Execute the query from binance - timestamps must be converted to strings !
-        candle = client.get_historical_klines(str(self.ticker), Client.KLINE_INTERVAL_1WEEK, str(sinceThisDate),
-                                              str(untilThisDate))
-        return candle
+        try:
+            candle = client.get_historical_klines(str(self.ticker), Client.KLINE_INTERVAL_1WEEK, str(sinceThisDate),
+                                                  str(untilThisDate))
+            return candle
+        except:
+            print(f'unable to retrieve data for {self.ticker} ')
+            return None
 
-    def GetMomentum(self,candle, week_number):
+    def GetMomentum(self, candle, week_number):  # Getting the DataBase and the week number
         closing_price = float(candle[week_number][closing_price_index])
         closing_price_weeklater = float(candle[week_number + 1][closing_price_index])
         momentum = closing_price - closing_price_weeklater
@@ -50,7 +55,7 @@ def Get_axis_graph(CoinStock, candle):
     list_closing_times = []
     i = 0
     for week in range(len(candle) - 1):
-        momentum, close_time = CoinStock.GetMomentum(candle,i)
+        momentum, close_time = CoinStock.GetMomentum(candle, i)
         list_momentum.append(momentum)
         list_closing_times.append(close_time)
         i += 1
@@ -60,9 +65,12 @@ def Get_axis_graph(CoinStock, candle):
 
 
 def main():
+    list_of_coins = []
     BTC = Stock('BTCUSDT', 365)
-    candle_db = BTC.GetHistoricalData()
-    x, y = Get_axis_graph(BTC, candle_db)
+    ETH = Stock('ETHUSDT', 365)
+    list_of_coins.append(BTC)
+
+    BTC_x, BTC_y = Get_axis_graph(BTC, BTC.GetHistoricalData())
 
 
 if __name__ == '__main__':
