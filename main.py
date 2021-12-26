@@ -37,7 +37,7 @@ class Stock:
             candle = client.get_historical_klines(str(self.ticker), Client.KLINE_INTERVAL_1WEEK, str(sinceThisDate),
                                                   str(untilThisDate))
             return candle
-        except:
+        except():
             print(f'unable to retrieve data for {self.ticker} ')
             return None
 
