@@ -62,6 +62,8 @@ class Login_Page:
         login_button.grid(row=3, column=2, pady=10)
 
     def validateLogin(self):
+        global confirmed_login
+        confirmed_login = False
         check_counter = 0
         user_input = self.usernameEntry.get()
         password_input = self.passwordEntry.get()
@@ -73,19 +75,18 @@ class Login_Page:
             warn = 'Password cannot be empty'
         else:
             check_counter += 1
-        if check_counter == 2:
+        if check_counter != 2:
+            messagebox.showerror('', warn)
+        else:
             for i in range(len(self.users_dictionary['username'])):
                 if user_input == self.users_dictionary['username'][i] and password_input == \
                         self.users_dictionary['Password'][i]:
                     self.root.destroy()
                     print('It WORKS')
-
-                    # SUPER IMPORTANT
-                    return None
-                else:
-                    messagebox.showerror('', 'invalid username or password')
-        else:
-            messagebox.showerror('', warn)
+                    import mainpage
+                    confirmed_login = True
+            if not confirmed_login:
+                messagebox.showerror('', 'invalid username or password')
 
 
 Login_Page(mainscreen)
