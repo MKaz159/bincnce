@@ -8,8 +8,8 @@ from dotenv import load_dotenv
 # from tkinter import
 
 load_dotenv()
-API_KEY = os.getenv('API_KEY_TEST')
-API_SECRET = os.getenv('API_SECRET_TEST')
+API_KEY = os.getenv('API_KEY')
+API_SECRET = os.getenv('API_SECRET')
 client = Client(API_KEY, API_SECRET)
 closing_time_index = 6
 closing_price_index = 4
@@ -20,7 +20,6 @@ class Stock:
         self.ticker = ticker
         if howlong is None:
             self.howlong = 60
-        self.howlong = howlong
         self.candle = []
 
     def GetHistoricalData(self):  # Retrieving the candle database
@@ -63,23 +62,21 @@ def GetMomentum(candle, time_index):
     The Momentum Value and the day for which it was calculated
     """
     closing_price = float(candle[time_index][closing_price_index])
-    closing_price_10days_later = float(candle[time_index + 10][closing_price_index])
-    momentum = closing_price_10days_later - closing_price
-    time_stamp = candle[time_index+10][closing_time_index]
+    closing_price_10days_earlier = float(candle[time_index-10][closing_price_index])
+    momentum = closing_price - closing_price_10days_earlier
+    time_stamp = candle[time_index][closing_time_index]
     time_stamp = str((datetime.fromtimestamp(int(time_stamp / 1000))))
     time_stamp = time_stamp.split()
-    return momentum, time_stamp[0]
+    return momentum.__round__(), time_stamp[0]
 
 
 def Get_axis_graph(candle):
     list_momentum = []
     list_closing_times = []
-    i = 0
-    while i < len(candle)-10:
+    for i in range(10, len(candle)):
         momentum, close_time = GetMomentum(candle, i)
         list_momentum.append(math.floor(momentum))
         list_closing_times.append(close_time)
-        i += 1
     x = list_closing_times
     y = list_momentum
     return x, y
@@ -87,12 +84,13 @@ def Get_axis_graph(candle):
 
 def main():
     list_of_coins = []
-    BTC = Stock('BTCUSDT', 30)
+    BTC = Stock('BTCUSDT')
     BTC_candle = BTC.GetHistoricalData()
-    ETH = Stock('ETHUSDT', 30)
+    ETH = Stock('ETHUSDT')
     list_of_coins.append(BTC)
 
     BTC_x, BTC_y = Get_axis_graph(BTC_candle)
+    pprint.pprint(BTC_x)
     BTC_PRICE_x, BTC_PRICE_y = BTC.Get_axis_pricing_graph()
 
 

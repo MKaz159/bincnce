@@ -15,18 +15,20 @@ client = Client(API_KEY, API_SECRET)
 coin_to_candle_DB = {}
 stocks_momentum = {}
 
+
 def GetValues():
     usr_input = ''
     while usr_input != 'stop':
         usr_input = input('Enter Your coin pairs ("stop" in order to exit) : ')
-        coin_list.append(Stock(usr_input))
+        coin_list.append(Stock(usr_input.upper()))
     coin_list.pop()
     return coin_list
 
 
 for coin in GetValues():
-    coin_to_candle_DB.update({coin.ticker: coin.GetHistoricalData})
+    coin_to_candle_DB.update({coin.ticker: coin.GetHistoricalData()})
 for key, value in coin_to_candle_DB.items():
-    print(key)
-    stocks_momentum
+    momentum_value, momentum_time = GetMomentum(value, len(value)-1)
+    print(f' {key} momentum is {momentum_value} at {momentum_time}')
+    stocks_momentum.update({key: momentum_value})
 # def Printing_Best_momentum(coins):
