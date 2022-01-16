@@ -40,7 +40,7 @@ class Stock:
             return candle
         except():
             print(f'unable to retrieve data for {self.ticker} ')
-            return None
+            pass
 
     def Get_axis_pricing_graph(self):
         list_pricing = []
