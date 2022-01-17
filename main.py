@@ -1,20 +1,23 @@
 import math
 import os
 import pprint
+import ast
 from binance.client import Client
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
-# from tkinter import
-
+# All the default values that will be used in this program
 load_dotenv()
 API_KEY = os.getenv('API_KEY')
 API_SECRET = os.getenv('API_SECRET')
 client = Client(API_KEY, API_SECRET)
 closing_time_index = 6
 closing_price_index = 4
+coin_to_candle_DB = {}
+stocks_momentum = {}
 
 
+# Class containing ticker info and candle history for 60 days (Daily Candle)
 class Stock:
     def __init__(self, ticker, howlong=None):
         self.ticker = ticker
@@ -42,18 +45,20 @@ class Stock:
             print(f'unable to retrieve data for {self.ticker} ')
             pass
 
-    def Get_axis_pricing_graph(self):
-        list_pricing = []
-        list_closing_times = []
-        candle = self.GetHistoricalData()
-        for time_index in range(len(candle)):
-            list_pricing.append(float(candle[time_index][closing_price_index]))
-            list_closing_times.append(candle[time_index][closing_time_index])
-        x = list_closing_times
-        y = list_pricing
-        return x, y
+
+# Returns Certains dates
+def Get_axis_pricing_graph(candle):
+    list_pricing = []
+    list_closing_times = []
+    for time_index in range(len(candle)):
+        list_pricing.append(float(candle[time_index][closing_price_index]))
+        list_closing_times.append(candle[time_index][closing_time_index])
+    x = list_closing_times
+    y = list_pricing
+    return x, y
 
 
+# Get's you momentum and time stamp for a certain position in the candle database
 def GetMomentum(candle, time_index):
     """
     :param candle:
@@ -62,7 +67,7 @@ def GetMomentum(candle, time_index):
     The Momentum Value and the day for which it was calculated
     """
     closing_price = float(candle[time_index][closing_price_index])
-    closing_price_10days_earlier = float(candle[time_index-10][closing_price_index])
+    closing_price_10days_earlier = float(candle[time_index - 10][closing_price_index])
     momentum = closing_price - closing_price_10days_earlier
     time_stamp = candle[time_index][closing_time_index]
     time_stamp = str((datetime.fromtimestamp(int(time_stamp / 1000))))
@@ -70,7 +75,13 @@ def GetMomentum(candle, time_index):
     return momentum.__round__(), time_stamp[0]
 
 
+# Calculates the momentum values over time
 def Get_axis_graph(candle):
+    """
+    :param candle:
+    :return:
+    The X and Y axis for the selected candle DB (per stock)
+    """
     list_momentum = []
     list_closing_times = []
     for i in range(10, len(candle)):
@@ -82,16 +93,51 @@ def Get_axis_graph(candle):
     return x, y
 
 
-def main():
-    list_of_coins = []
-    BTC = Stock('BTCUSDT')
-    BTC_candle = BTC.GetHistoricalData()
-    ETH = Stock('ETHUSDT')
-    list_of_coins.append(BTC)
+# Will be replaced by checklist in tkinter
+def GetValues():
+    """
+    :return:
+    TEMPORARY FUNCTION
+    """
+    coin_list = []
+    usr_input = ''
+    while usr_input != 'stop':
+        usr_input = input('Enter Your coin pairs ("stop" in order to exit) : ')
+        coin_list.append(Stock(usr_input.upper()))
+    coin_list.pop()
+    # if coin list is empty we use default list which is likely better than your list
+    if not coin_list:
+        raw_coin_list = ast.literal_eval(os.getenv('default_list'))
+        for coin in raw_coin_list:
+            coin_list.append(Stock(coin))
+    for coin in coin_list:
+        try:
+            coin_to_candle_DB.update({coin.ticker: coin.GetHistoricalData()})
+        except:
+            print(f'{coin.ticker} is not a coin')
+    return coin_to_candle_DB
 
-    BTC_x, BTC_y = Get_axis_graph(BTC_candle)
-    pprint.pprint(BTC_x)
-    BTC_PRICE_x, BTC_PRICE_y = BTC.Get_axis_pricing_graph()
+
+def Get_buy_appraisal(coin_to_candle_dictionary):
+    """
+    :param coin_to_candle_dictionary:
+    :return:
+    Who are the Three stocks who got the highest momentum today
+    """
+    for key, value in coin_to_candle_dictionary.items():
+        momentum_value, momentum_time = GetMomentum(value, len(value) - 1)
+        stocks_momentum.update({key: momentum_value})
+    highest_keys = sorted(stocks_momentum, key=stocks_momentum.get, reverse=True)[:3]
+    for i in highest_keys:
+        print(f'Buy {i}')
+
+
+def main():
+    coin_database = GetValues()
+    Get_buy_appraisal(coin_database)
+    # Assume that i want the value for BNB and BNB is inside of my list
+    x, y = Get_axis_graph(coin_database['BNBBUSD'])
+    BTC_PRICE_x, BTC_PRICE_y = Get_axis_pricing_graph(coin_database['BNBBUSD'])
 
 
 if __name__ == '__main__':
