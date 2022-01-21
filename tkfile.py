@@ -5,12 +5,12 @@ from tkinter import messagebox
 from dotenv import load_dotenv
 
 load_dotenv()
-mainscreen = Tk()
+root_login = Tk()
 
-mainscreen.title('Login Screen')
-mainscreen.geometry('500x400')
-mainscreen.config(bg="#447c84")
-mainscreen.resizable(False, False)
+root_login.title('Login Screen')
+root_login.geometry('500x400')
+root_login.config(bg="#447c84")
+root_login.resizable(False, False)
 
 
 class Login_Page:
@@ -50,7 +50,7 @@ class Login_Page:
 
         # Button
 
-        login_button = Button(
+        self.login_button = Button(
             frame,
             text="Login",
             padx=20,
@@ -59,10 +59,10 @@ class Login_Page:
             font=("Times", "14", "bold"),
             command=self.validateLogin
         )
-        login_button.grid(row=3, column=2, pady=10)
+        self.login_button.grid(row=3, column=2, pady=10)
 
     def validateLogin(self):
-        global confirmed_login
+        #global confirmed_login
         confirmed_login = False
         check_counter = 0
         user_input = self.usernameEntry.get()
@@ -89,5 +89,5 @@ class Login_Page:
                 messagebox.showerror('', 'invalid username or password')
 
 
-Login_Page(mainscreen)
-mainscreen.mainloop()
+login = Login_Page(root_login)
+root_login.mainloop()
