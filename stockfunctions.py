@@ -1,6 +1,7 @@
 import math
 import os
 import ast
+import sys
 from binance.client import Client
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
@@ -9,7 +10,13 @@ from dotenv import load_dotenv
 load_dotenv()
 API_KEY = os.getenv('API_KEY')
 API_SECRET = os.getenv('API_SECRET')
-client = Client(API_KEY, API_SECRET)
+if API_KEY is None or API_SECRET is None:
+    sys.exit("Either `API_KEY` or `SECRET_KEY` env. variable is not defined!")
+try:
+    client = Client(API_KEY, API_SECRET)
+except():
+    print('Cant connect to api')
+    sys.exit()
 closing_time_index = 6
 closing_price_index = 4
 coin_to_candle_DB = {}
@@ -29,9 +36,24 @@ class Stock:
         try:
             self.candle = client.get_historical_klines(str(self.ticker), Client.KLINE_INTERVAL_1DAY, str(sinceThisDate),
                                                        str(untilThisDate))
-        except:
+        except():
             print(f'unable to retrieve data for {self.ticker} ')
             self.candle = []
+
+    def Buyers_regret(self):
+        client.create_test_order(
+            symbol=str(self.ticker),
+            side=Client.SIDE_BUY,
+            type=Client.ORDER_TYPE_MARKET,
+            quoteOrderQty=30)
+        print('Buy order registered')
+
+    def Sellers_remorse(self):
+        client.create_test_order(
+            symbol=str(self.ticker),
+            side=Client.SIDE_SELL,
+            type=Client.ORDER_TYPE_MARKET,
+            quoteOrderQty=30)
 
     # Returns Certains dates
     def Get_axis_pricing_graph(self):
@@ -47,7 +69,6 @@ class Stock:
     # Get's you momentum and time stamp for a certain position in the candle database
     def GetMomentum(self, time_index) -> object:
         """
-        :param candle:
         :param time_index:
         :return:
         The Momentum Value and the day for which it was calculated
@@ -60,12 +81,11 @@ class Stock:
         time_stamp = self.candle[time_index][closing_time_index]
         time_stamp = str((datetime.fromtimestamp(int(time_stamp / 1000))))
         time_stamp = time_stamp.split()
-        return momentum.__round__(), time_stamp[0]
+        return momentum, time_stamp[0]
 
     # Calculates the momentum values over time
     def Get_axis_graph(self):
         """
-        :param candle:
         :return:
         The X and Y axis for the selected candle DB (per stock)
         """
@@ -113,6 +133,7 @@ def GetValues():
 
 
 def Get_buy_appraisal(coin_to_candle_dictionary):
+    top3_stock_lst = []
     """
     :param coin_to_candle_dictionary:
     :return:
@@ -120,20 +141,26 @@ def Get_buy_appraisal(coin_to_candle_dictionary):
     """
     for key, value in coin_to_candle_dictionary.items():
         momentum_value, momentum_time = value.GetMomentum(len(value.candle) - 1)
-        stocks_momentum.update({key: momentum_value})
+        if momentum_value > 0:
+            stocks_momentum.update({key: momentum_value})
+    # pprint(stocks_momentum)
     highest_keys = sorted(stocks_momentum, key=stocks_momentum.get, reverse=True)[:3]
     for i in highest_keys:
-        print(f'Buy {i}')
+        top3_stock_lst.append(i)
+    return top3_stock_lst
 
 
 def main():
     coin_database = GetValues()
-    Get_buy_appraisal(coin_database)
+    top3 = Get_buy_appraisal(coin_database)
     # Assume that i want the value for BNB and BNB is inside of my list
     x, y = Stock.Get_axis_graph(coin_database['XRPBUSD'])
     XRP_PRICE_x, XRP_PRICE_y = Stock.Get_axis_pricing_graph(coin_database['XRPBUSD'])
-    print (XRP_PRICE_y[59])
+    print(top3)
+    print(len(XRP_PRICE_x))
 
 
 if __name__ == '__main__':
     main()
+    # XRP = Stock('XRPBUSD')
+    # pprint(XRP.candle)
