@@ -46,14 +46,15 @@ class Stock:
             side=Client.SIDE_BUY,
             type=Client.ORDER_TYPE_MARKET,
             quoteOrderQty=30)
-        print('Buy order registered')
+        print('Buy order registered\n')
 
-    def Sellers_remorse(self):
+    def Sellers_remorse(self, amount):
         client.create_test_order(
             symbol=str(self.ticker),
             side=Client.SIDE_SELL,
             type=Client.ORDER_TYPE_MARKET,
-            quoteOrderQty=30)
+            quantity=amount)
+        print(f'SOLD {self.ticker} {amount} units')
 
     # Returns Certains dates
     def Get_axis_pricing_graph(self):
@@ -108,22 +109,10 @@ def GetValues():
     """
     raw_coin_list = []
     coin_list = []
-    usr_input = ''
-    while usr_input != 'stop':
-        usr_input = input('Enter Your coin pairs ("stop" in order to exit) : ')
-        raw_coin_list.append((usr_input.upper()))
-    raw_coin_list.pop()
     # if coin list is empty we use default list which is likely better than your list
-    if not raw_coin_list:
-        raw_coin_list = ast.literal_eval(os.getenv('default_list'))
-        for coin in raw_coin_list:
-            coin_list.append(Stock(coin))
-    else:
-        for coin in raw_coin_list:
-            if Stock(coin).candle:
-                coin_list.append(Stock(coin))
-            else:
-                print(f'coin {coin} aint getting in ')
+    raw_coin_list = ast.literal_eval(os.getenv('default_list'))
+    for coin in raw_coin_list:
+        coin_list.append(Stock(coin))
     for coin in coin_list:
         try:
             coin_to_candle_DB.update({coin.ticker: coin})
@@ -162,5 +151,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # XRP = Stock('XRPBUSD')
-    # pprint(XRP.candle)
+    XRP = Stock('XRPBUSD')
