@@ -40,12 +40,12 @@ class Stock:
             print(f'unable to retrieve data for {self.ticker} ')
             self.candle = []
 
-    def Buyers_regret(self):
+    def Buyers_regret(self,amount):
         client.create_test_order(
             symbol=str(self.ticker),
             side=Client.SIDE_BUY,
             type=Client.ORDER_TYPE_MARKET,
-            quoteOrderQty=30)
+            quoteOrderQty=amount)
         print('Buy order registered\n')
 
     def Sellers_remorse(self, amount):
@@ -54,7 +54,7 @@ class Stock:
             side=Client.SIDE_SELL,
             type=Client.ORDER_TYPE_MARKET,
             quantity=amount)
-        print(f'SOLD {self.ticker} {amount} units')
+        print(f'SOLD {self.ticker} {amount} units\n')
 
     # Returns Certains dates
     def Get_axis_pricing_graph(self):

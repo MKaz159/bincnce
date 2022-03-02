@@ -1,7 +1,10 @@
+import time
+
 from stockfunctions import *
 
 
 def get_minimum_price(ticker):
+    value = ''
     filters = client.get_symbol_info(ticker)["filters"]
     for i in filters:
         if i["filterType"] == "PRICE_FILTER":
@@ -53,12 +56,16 @@ def coin_to_coinBUSD(owned_coins):
 
 def main():
     TOTAL_BALANCE = 0
+
     coin_database = GetValues()  # for example {'BNBBUSD': Stock('BNBBUSD')
     desired_coins = Get_buy_appraisal(coin_database)  # for example ['BNBBUSD','ATOMBUSD','ETHBUSD']
     print(f' The desired coins are {desired_coins} \n')
+
     owned_coins = GetOwnedAssets()  # for example {'BNB': 0.01, 'ETH':3}
     buyer = Compare_Between_owned(owned_coins, desired_coins)  # ['BNBBUSD', 'ADABUSD']
+
     owned_coin_pairs = coin_to_coinBUSD(owned_coins)
+
     for selling_coin in owned_coin_pairs:
         if selling_coin in desired_coins:  # if a coin is desired and and is owned
             print(f"Your coin {selling_coin} hasn't been sold cause it is in the desired coins\n")
@@ -81,9 +88,12 @@ def main():
                     print(f"couldn't sell the {selling_coin} the amount is too little\n")
             except:
                 print(f"Couldn't sell {selling_coin} it isn't listed on the market\n")
+    owned_coins_after_selling = GetOwnedAssets()['BUSD']
+    price_for_one_stock = math.floor(float(owned_coins_after_selling) / 3)
+    time.sleep(10) # Debatable if needed
     for buying_coin in buyer:
-        coin_database[buying_coin].Buyers_regret()
-        print(f'BOUGHT {buying_coin} for 30$')
+        coin_database[buying_coin].Buyers_regret(price_for_one_stock)
+        print(f'BOUGHT {buying_coin} for {price_for_one_stock}$')
         TOTAL_BALANCE -= 30
     # print(TOTAL_BALANCE)
 
