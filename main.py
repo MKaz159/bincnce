@@ -76,13 +76,14 @@ def main():
                 # we need to check that the amount is bigger than the minimum
                 minimum_quantity_for_coin = get_minimum_price(selling_coin)
                 variable = math.floor(float(amount_of_coin))
-                if amount_of_coin > minimum_quantity_for_coin: # This is with BUSD tag
+                print(f' THE VARIABLE IN QUESTION IS {variable}')
+                if amount_of_coin > minimum_quantity_for_coin:  # This is with BUSD tag
                     if selling_coin in ['DOGEBUSD', 'SHIBBUSD', 'CAKEBUSD'] and int(variable) > 0:
                         coin_database[selling_coin].Sellers_remorse(int(variable))
                     elif selling_coin in ['DOGEBUSD', 'SHIBBUSD', 'CAKEBUSD']:
                         print("cant sell the coin it is shit \n")
                     else:
-                        coin_database[selling_coin].Sellers_remorse(amount_of_coin)  # {'BTC': 0.02}
+                        coin_database[selling_coin].Sellers_remorse('{:.{}f}'.format(float(amount_of_coin), 4))  # {'BTC': 0.02}
 
                 else:
                     print(f"couldn't sell the {selling_coin} the amount is too little\n")
@@ -90,12 +91,10 @@ def main():
                 print(f"Couldn't sell {selling_coin} it isn't listed on the market\n")
     owned_coins_after_selling = GetOwnedAssets()['BUSD']
     price_for_one_stock = math.floor(float(owned_coins_after_selling) / 3)
-    time.sleep(10) # Debatable if needed
+    time.sleep(10)  # Debatable if needed
     for buying_coin in buyer:
         coin_database[buying_coin].Buyers_regret(price_for_one_stock)
         print(f'BOUGHT {buying_coin} for {price_for_one_stock}$')
-        TOTAL_BALANCE -= 30
-    # print(TOTAL_BALANCE)
 
 
 if __name__ == '__main__':

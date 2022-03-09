@@ -17,6 +17,8 @@ try:
 except():
     print('Cant connect to api')
     sys.exit()
+
+
 closing_time_index = 6
 closing_price_index = 4
 coin_to_candle_DB = {}
@@ -40,7 +42,7 @@ class Stock:
             print(f'unable to retrieve data for {self.ticker} ')
             self.candle = []
 
-    def Buyers_regret(self,amount):
+    def Buyers_regret(self, amount):
         client.create_test_order(
             symbol=str(self.ticker),
             side=Client.SIDE_BUY,
