@@ -18,7 +18,6 @@ except():
     print('Cant connect to api')
     sys.exit()
 
-
 closing_time_index = 6
 closing_price_index = 4
 coin_to_candle_DB = {}
@@ -48,7 +47,8 @@ class Stock:
             side=Client.SIDE_BUY,
             type=Client.ORDER_TYPE_MARKET,
             quoteOrderQty=amount)
-        print('Buy order registered\n')
+        #tmp_str = f'Bought {self.ticker} {amount}$ \n'
+        #return tmp_str
 
     def Sellers_remorse(self, amount):
         client.create_test_order(
@@ -56,7 +56,8 @@ class Stock:
             side=Client.SIDE_SELL,
             type=Client.ORDER_TYPE_MARKET,
             quantity=amount)
-        print(f'SOLD {self.ticker} {amount} units\n')
+        tmp_str = f'SOLD {self.ticker} {amount} units\n'
+        return tmp_str
 
     # Returns Certains dates
     def Get_axis_pricing_graph(self):

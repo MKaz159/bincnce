@@ -1,15 +1,19 @@
-import time
+# import time
 
 from stockfunctions import *
+from quickstart import SendEmailToMKAZ
 
 
 def get_minimum_price(ticker):
     value = ''
-    filters = client.get_symbol_info(ticker)["filters"]
+    try:
+        filters = client.get_symbol_info(ticker)["filters"]
+    except:
+        return '99999999'
     for i in filters:
         if i["filterType"] == "PRICE_FILTER":
             value = i['minPrice']
-            print(f"the minimum price for {ticker} is {i['minPrice']}")
+            # print(f"the minimum price for {ticker} is {i['minPrice']}")
     return value
 
 
@@ -27,24 +31,6 @@ def GetOwnedAssets():
     return new_dict
 
 
-def Compare_Between_owned(owned_stocks, stocks_desired):
-    """
-    :param owned_stocks: [BTC,
-    :param stocks_desired:
-    :return:
-    A list of stocks that are going to be bought (AKA not in owned_stocks but are in desired
-    """
-    what_should_i_buy = []
-    sorted_desired_stocks = []
-    for x in stocks_desired:
-        sorted_desired_stocks.append(x.replace('BUSD', ''))
-    for stock in sorted_desired_stocks:
-        if stock not in owned_stocks:
-            what_should_i_buy.append(stock + 'BUSD')
-
-    return what_should_i_buy
-
-
 # When the calculation occurs
 def coin_to_coinBUSD(owned_coins):
     coin_with_BUSD = []
@@ -56,45 +42,54 @@ def coin_to_coinBUSD(owned_coins):
 
 def main():
     TOTAL_BALANCE = 0
-
+    message = ""
     coin_database = GetValues()  # for example {'BNBBUSD': Stock('BNBBUSD')
     desired_coins = Get_buy_appraisal(coin_database)  # for example ['BNBBUSD','ATOMBUSD','ETHBUSD']
-    print(f' The desired coins are {desired_coins} \n')
+    message += f'{desired_coins}\n'
 
     owned_coins = GetOwnedAssets()  # for example {'BNB': 0.01, 'ETH':3}
-    buyer = Compare_Between_owned(owned_coins, desired_coins)  # ['BNBBUSD', 'ADABUSD']
 
     owned_coin_pairs = coin_to_coinBUSD(owned_coins)
 
     for selling_coin in owned_coin_pairs:
-        if selling_coin in desired_coins:  # if a coin is desired and and is owned
-            print(f"Your coin {selling_coin} hasn't been sold cause it is in the desired coins\n")
+        if selling_coin not in coin_database:
+            message += f'The {selling_coin} coin isnt supported\n'
+        elif selling_coin in desired_coins:  # if a coin is desired and and is owned
+            message += f"Your coin {selling_coin} hasn't been sold cause it is in the desired coins\n"
         elif selling_coin != 'BUSDBUSD':  # if a coin desired and not owned
-            try:
-                amount_of_coin = owned_coins[selling_coin.replace('BUSD', '')]  # i need the coin without the busd
-                print(f' The amount of {selling_coin} is = {amount_of_coin}')
-                # we need to check that the amount is bigger than the minimum
-                minimum_quantity_for_coin = get_minimum_price(selling_coin)
-                variable = math.floor(float(amount_of_coin))
-                print(f' THE VARIABLE IN QUESTION IS {variable}')
-                if amount_of_coin > minimum_quantity_for_coin:  # This is with BUSD tag
-                    if selling_coin in ['DOGEBUSD', 'SHIBBUSD', 'CAKEBUSD'] and int(variable) > 0:
-                        coin_database[selling_coin].Sellers_remorse(int(variable))
-                    elif selling_coin in ['DOGEBUSD', 'SHIBBUSD', 'CAKEBUSD']:
-                        print("cant sell the coin it is shit \n")
-                    else:
-                        coin_database[selling_coin].Sellers_remorse('{:.{}f}'.format(float(amount_of_coin), 4))  # {'BTC': 0.02}
-
+            amount_of_coin = owned_coins[selling_coin.replace('BUSD', '')]
+            # i need the coin without the busd
+            # print(f' The amount of {selling_coin} is = {amount_of_coin}')
+            # we need to check that the amount is bigger than the minimum
+            minimum_quantity_for_coin = get_minimum_price(selling_coin)
+            variable = math.floor(float(amount_of_coin))
+            if amount_of_coin > minimum_quantity_for_coin:  # This is with BUSD tag
+                if selling_coin in ['DOGEBUSD', 'SHIBBUSD', 'CAKEBUSD'] and int(
+                        variable) > 0:  # If selling_coin is bigger than 1
+                    message += coin_database[selling_coin].Sellers_remorse(int(variable))
+                elif selling_coin in ['DOGEBUSD', 'SHIBBUSD', 'CAKEBUSD']:
+                    message += "cant sell the coin it is shit \n"
                 else:
-                    print(f"couldn't sell the {selling_coin} the amount is too little\n")
-            except:
-                print(f"Couldn't sell {selling_coin} it isn't listed on the market\n")
-    owned_coins_after_selling = GetOwnedAssets()['BUSD']
+                    try:
+                        message += coin_database[selling_coin].Sellers_remorse(
+                            '{:.{}f}'.format(float(amount_of_coin), 4))  # {'BTC': 0.02}
+                    except:
+                        try:
+                            message += coin_database[selling_coin].Sellers_remorse(variable)
+                        except Exception as ex:
+                            message += f"Couldn't sell {selling_coin} {str(ex)}\n"
+            else:
+                message += f"couldn't sell the {selling_coin} the amount is too little\n"
+    owned_coins_after_selling = GetOwnedAssets()['BUSD']  # {'BUSD': 134}
+    # time.sleep(10)  # Debatable if needed
     price_for_one_stock = math.floor(float(owned_coins_after_selling) / 3)
-    time.sleep(10)  # Debatable if needed
-    for buying_coin in buyer:
-        coin_database[buying_coin].Buyers_regret(price_for_one_stock)
-        print(f'BOUGHT {buying_coin} for {price_for_one_stock}$')
+    if price_for_one_stock > 1:
+        for buying_coin in desired_coins:
+            coin_database[buying_coin].Buyers_regret(price_for_one_stock)
+            message += f'BOUGHT {buying_coin} for {price_for_one_stock}$\n'
+    else:
+        message += f'insufficient balance didnt enforce desired coins\n'
+    SendEmailToMKAZ(message)
 
 
 if __name__ == '__main__':
