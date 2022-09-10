@@ -1,0 +1,89 @@
+          2022-08-21
+Bulls recommend a move on ['SHIBBUSD']
+
+ sales force initiated
+Attempting to sell BNBBUSD with amount of 0.00040440
+Couldnt sell BNBBUSD, 0.0$ is to little
+No BUSD in the bank
+ No BUSD in the Bank Bulls not initiated
+
+          2022-08-23
+Bulls recommend a move on ['SHIBBUSD']
+
+ sales force initiated
+Attempting to sell BNBBUSD with amount of 0.00040440
+Couldnt sell BNBBUSD, 0.0$ is to little
+No BUSD in the bank
+ No BUSD in the Bank Bulls not initiated
+          2022-08-26
+Bulls recommend a move on ['ATOMBUSD']
+
+ sales force initiated
+Attempting to sell BNBBUSD with amount of 0.00016095
+Couldnt sell BNBBUSD, 0.0$ is to little
+No BUSD in the bank
+ No BUSD in the Bank Bulls not initiated
+
+          2022-08-28
+Bulls recommend a move on []
+
+ sales force initiated
+Attempting to sell BNBBUSD with amount of 0.00016095
+Couldnt sell BNBBUSD, 0.0$ is to little
+Attempting to sell ATOMBUSD with amount of 0.09889000
+
+          2022-08-29
+Bulls recommend a move on ['BNBBUSD', 'CREAMBUSD', 'ATOMBUSD']
+recommended assets are already ownedNo BUSD in the bank
+ No BUSD in the Bank Bulls not initiated
+
+          2022-09-05
+Bulls recommend a move on ['ETHBUSD', 'ATOMBUSD', 'AXSBUSD']
+
+ sales force initiated
+Attempting to sell BNBBUSD with amount of 0.00001736
+Couldnt sell BNBBUSD, 0.0$ is to little
+Attempting to sell CAKEBUSD with amount of 0.06000000
+
+          2022-09-06
+Bulls recommend a move on ['ETHBUSD', 'ATOMBUSD', 'CAKEBUSD']
+
+ sales force initiated
+Attempting to sell BNBBUSD with amount of 0.07790085
+SOLD BNBBUSD 0.077 units
+Attempting to sell SOLBUSD with amount of 0.66000000
+SOLD SOLBUSD 0.66 units
+Attempting to sell AXSBUSD with amount of 0.97702000
+SOLD AXSBUSD 0.97 units
+
+Amount purchase for each asset 55.14620888$
+Attempting to purchase ETHBUSD for 18.382069626666667$
+Bought ETHBUSD 18.382$ 
+Attempting to purchase ATOMBUSD for 18.382069626666667$
+Bought ATOMBUSD 18.38$ 
+Attempting to purchase CAKEBUSD for 18.382069626666667$
+Bought CAKEBUSD 18.38$
+
+
+
+
+{'ATOM': '0.52554000',
+ 'AXS': '0.97702000',
+ 'BNB': '0.07790085',
+ 'BUSD': '1.42850888',
+ 'CAKE': '0.06000000',
+ 'ETH': '0.04010000',
+ 'SOL': '0.66000000'}
+fetching price for BNBBUSD
+passed inspection sale intiated for 0.077 on BNB
+fetching price for SOLBUSD
+passed inspection sale intiated for 0.66 on BNB
+fetching price for AXSBUSD
+passed inspection sale intiated for 0.97 on BNB
+{'ATOM': '2.04554000',
+ 'BNB': '0.00186154',
+ 'BUSD': '0.16668288',
+ 'CAKE': '4.65000000',
+ 'ETH': '0.05180000'}
+
+          2022-09-06
