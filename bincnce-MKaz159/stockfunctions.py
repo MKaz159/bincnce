@@ -29,7 +29,8 @@ class Stock:
 
         self.candle = client.get_historical_klines(str(self.ticker), Client.KLINE_INTERVAL_1DAY, str(sinceThisDate),
                                                    str(untilThisDate))
-
+    def __str__(self):
+        print(f'')
     def round_down(self, number):
         info = client.get_symbol_info(self.ticker)
         step_size = [float(_['stepSize']) for _ in info['filters'] if _['filterType'] == 'LOT_SIZE'][0]
@@ -85,7 +86,7 @@ class Stock:
         min_QTY = float(self.get_minimum_quantity())
         if float(amount_new) > float(min_QTY):
             print(f'passed inspection sale intiated for {amount_new} on BNB ')
-            client.create_order(recvWindow=59000,
+            client.create_test_order(recvWindow=59000,
                 symbol=str(self.ticker),
                 side=Client.SIDE_SELL,
                 type=Client.ORDER_TYPE_MARKET,
@@ -97,16 +98,16 @@ class Stock:
             return tmp_str
 
     # Get's you momentum and time stamp for a certain position in the candle database
-    def GetMomentum(self, time_index) -> object:
+    def GetMomentum(self) -> object:
         """
         :param time_index:
         :return:
         The Momentum Value and the day for which it was calculated
         """
-        closing_price = float(self.candle[time_index][closing_price_index])
-        closing_price_10days_earlier = float(self.candle[time_index - 10][closing_price_index])
+        closing_price = float(self.candle[0][closing_price_index])
+        closing_price_10days_earlier = float(self.candle[0 - 10][closing_price_index])
         momentum = closing_price - closing_price_10days_earlier
-        time_stamp = self.candle[time_index][closing_time_index]
+        time_stamp = self.candle[0][closing_time_index]
         time_stamp = str((datetime.fromtimestamp(int(time_stamp / 1000))))
         time_stamp = time_stamp.split()
         return momentum, time_stamp[0]
@@ -144,11 +145,10 @@ def Get_buy_appraisal(coin_to_candle_dictionary):
 
 
 def main():
-    coin_database = GetValues()
-    top3 = Get_buy_appraisal(coin_database)
-    print(top3)
     BNB = Stock('BNBBUSD')
-    print(BNB.Buyers_regret(20))
+    momentum,timestamp = BNB.GetMomentum()
+    print(f'The momentum is {momentum}, While timestamp is {timestamp}')
+
 
 
 

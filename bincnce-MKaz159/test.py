@@ -6,12 +6,11 @@ import pprint
 import sys
 import math
 
-amount = 0.485
-total = (amount - 0.001) % 0.001
-print(total)
+
 load_dotenv()
 API_KEY = os.getenv('API_KEY')
 API_SECRET = os.getenv('API_SECRET')
+
 if API_KEY is None or API_SECRET is None:
     sys.exit("Either `API_KEY` or `SECRET_KEY` env. variable is not defined!")
 try:
@@ -20,22 +19,24 @@ except():
     print('Cant connect to api')
     sys.exit()
 
+# Finding minimum values for everything
+MKAZ_LIST = ['C','B','A']
+asset = client.get_asset_balance(asset='BUSD')['free']
+asset = float(asset)
+print(asset)
+asset_per_coin = asset/len(MKAZ_LIST)
+print(asset_per_coin)
+#precision = 8
+#rounded_value = math.floor(asset * 10 ** precision) / 10**precision
+#print(rounded_value)
+#order = client.create_test_order(
+#    symbol='ETHBUSD',
+#    recvWindow=59000,
+#    side=client.SIDE_BUY,
+#    type=client.ORDER_TYPE_MARKET,
+#    quoteOrderQty=rounded_value,
+#)
 
 
-def round_down(coin, number):
-    info = client.get_symbol_info(coin)
-    step_size = [float(_['stepSize']) for _ in info['filters'] if _['filterType'] == 'LOT_SIZE'][0]
-    step_size = '%.8f' % step_size
-    step_size = step_size.rstrip('0')
-    decimals = len(step_size.split('.')[1])
-    return math.floor(number * 10 ** decimals) / 10 ** decimals
-
-quantity = round_down('BNBBUSD', 0.485)
-print(quantity)
-client.create_test_order(recvWindow=59000,
-                         symbol='BNBBUSD',
-                         side=Client.SIDE_SELL,
-                         type=Client.ORDER_TYPE_MARKET,
-                         quantity=quantity)
 
 

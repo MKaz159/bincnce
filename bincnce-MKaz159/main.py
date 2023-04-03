@@ -85,7 +85,7 @@ def main():
                 try:
                     result_file.write(f'Attempting to sell {seller_coin} with amount of {amount}\n')
                     seller_stock_class = ticker_to_coinDB[seller_coin]  # Getting "Stock(seller_coin)"
-                    result = seller_stock_class.Sellers_remorse(amount)
+                    result = seller_stock_class.Sellers_remorse()
                     result_file.write(result)
                 except Exception as ex:
                     exc_type, exc_obj, exc_tb = sys.exc_info()
