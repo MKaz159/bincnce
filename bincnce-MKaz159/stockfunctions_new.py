@@ -17,6 +17,7 @@ logging.basicConfig(filename='example.log', filemode='w', level=logging.INFO,
                     format='%(asctime)s-%(levelname)s- %(message)s ', datefmt='%m/%d/%Y %I:%M:%S')
 
 
+
 def timing_decorator(func):
     def wrapper(*args, **kwargs):
         start_time = time.time()
@@ -165,10 +166,9 @@ def Selling_outdated_stock(stock_dict: Dict[str, Stock], list_for_selling):
     for coin_to_sell in list_for_selling:
         seller_candidate = stock_dict.get(coin_to_sell)
         try:
-            seller_candidate.Seller()
+            seller_candidate.Seller(test=False)
         except BinanceAPIException as execpt:
             print(f' Failed to initiate sell on {seller_candidate.symbol} with the {execpt}')
-
 def Buyer_new_destination(stock_dict: Dict[str, Stock], buy_target):
     precision = 8
     BUSD_balance =client.get_asset_balance(asset='BUSD')['free']
@@ -180,11 +180,15 @@ def Buyer_new_destination(stock_dict: Dict[str, Stock], buy_target):
     logging.info(f'Preparing to buy individual stocks. Per coin {BUSD_rounded}')
     for coin_to_buy in buy_target:
         buy_candidate = stock_dict.get(coin_to_buy)
-        buy_candidate.Buyer(amount=BUSD_rounded)
+        buy_candidate.Buyer(amount=BUSD_rounded,test=False)
+
+def Convert_Dust_assets(stock_dict: Dict[str, Stock], buy_target):
+    pass
 
 if __name__ == '__main__':
     stock_dict = Sorted_stonks_dict(default_list)  # A list of stock instances sorted by momentum
     list_of_destined_to_sell, filtered_owned_assets = Who_To_sell(list(stock_dict.values()))  # A list of symbols
     buy_target = Who_to_buy(list(stock_dict.values()))
     Selling_outdated_stock(stock_dict, list_of_destined_to_sell)
+    time.sleep(30)
     Buyer_new_destination(stock_dict, buy_target)

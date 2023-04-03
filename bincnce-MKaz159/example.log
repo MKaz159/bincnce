@@ -1,22 +1,22 @@
-04/03/2023 01:51:11-WARNING- Connection pool is full, discarding connection: api.binance.com. Connection pool size: 10 
-04/03/2023 01:51:11-INFO- sorted stock dict created. 
-04/03/2023 01:51:11-INFO- The destination of coins is = ['XRP', 'ADA', 'DOT'] 
-04/03/2023 01:51:11-INFO- User owns ['BTC', 'ETH', 'BNB', 'XRP', 'SOL'] with targeted ['XRP', 'ADA', 'DOT']. Decided to sell ['BTC', 'ETH', 'BNB', 'SOL'] 
-04/03/2023 01:51:11-INFO- The destination of coins is = ['XRP', 'ADA', 'DOT'] 
-04/03/2023 01:51:11-INFO- Seller function initiated for BTC 
-04/03/2023 01:51:12-INFO- Sold 0.00794 of BTC 
-04/03/2023 01:51:12-INFO- Seller function initiated for ETH 
-04/03/2023 01:51:12-ERROR- failed to place a selling for ETHBUSD due to APIError(code=-1013): Filter failure: MIN_NOTIONAL. 
-04/03/2023 01:51:12-INFO- Seller function initiated for BNB 
-04/03/2023 01:51:12-ERROR- failed to place a selling for BNBBUSD due to APIError(code=-1013): Filter failure: LOT_SIZE. 
-04/03/2023 01:51:12-INFO- Seller function initiated for SOL 
-04/03/2023 01:51:13-INFO- Sold 15.6 of SOL 
-04/03/2023 01:51:13-INFO- Buyer initiated with 0.25710930 
-04/03/2023 01:51:13-INFO- Total BUSD is 0.2571093 while having 3 coins. 0.08570309999999999$ 
-04/03/2023 01:51:13-INFO- Preparing to buy individual stocks. Per coin 0.08570309 
-04/03/2023 01:51:13-INFO- Buyer function initiated for XRP 
-04/03/2023 01:51:13-ERROR- failed to place a buying for XRPBUSD due to APIError(code=-1013): Filter failure: MIN_NOTIONAL. 
-04/03/2023 01:51:13-INFO- Buyer function initiated for ADA 
-04/03/2023 01:51:14-ERROR- failed to place a buying for ADABUSD due to APIError(code=-1013): Filter failure: MIN_NOTIONAL. 
-04/03/2023 01:51:14-INFO- Buyer function initiated for DOT 
-04/03/2023 01:51:14-ERROR- failed to place a buying for DOTBUSD due to APIError(code=-1013): Filter failure: MIN_NOTIONAL. 
+04/03/2023 05:22:59-WARNING- Connection pool is full, discarding connection: api.binance.com. Connection pool size: 10 
+04/03/2023 05:22:59-INFO- sorted stock dict created. 
+04/03/2023 05:23:00-INFO- The destination of coins is = ['XRP', 'ADA', 'DOT'] 
+04/03/2023 05:23:00-INFO- User owns ['BTC', 'ETH', 'BNB', 'XRP', 'SOL'] with targeted ['XRP', 'ADA', 'DOT']. Decided to sell ['BTC', 'ETH', 'BNB', 'SOL'] 
+04/03/2023 05:23:00-INFO- The destination of coins is = ['XRP', 'ADA', 'DOT'] 
+04/03/2023 05:23:00-INFO- Seller function initiated for BTC 
+04/03/2023 05:23:01-INFO- Sold 0.00794 of BTC 
+04/03/2023 05:23:01-INFO- Seller function initiated for ETH 
+04/03/2023 05:23:01-INFO- Seller function initiated for BNB 
+04/03/2023 05:23:01-INFO- Seller function initiated for SOL 
+04/03/2023 05:23:02-INFO- Sold 15.6 of SOL 
+04/03/2023 05:23:32-INFO- Buyer initiated with 543.27920750 
+04/03/2023 05:23:32-INFO- Total BUSD is 543.2792075 while having 4 coins. 135.819801875$ 
+04/03/2023 05:23:32-INFO- Preparing to buy individual stocks. Per coin 135.81980187 
+04/03/2023 05:23:32-INFO- Buyer function initiated for BTC 
+04/03/2023 05:23:33-INFO- Purchased 135.81980187 of BTC. 
+04/03/2023 05:23:33-INFO- Buyer function initiated for ETH 
+04/03/2023 05:23:34-INFO- Purchased 135.81980187 of ETH. 
+04/03/2023 05:23:34-INFO- Buyer function initiated for BNB 
+04/03/2023 05:23:34-INFO- Purchased 135.81980187 of BNB. 
+04/03/2023 05:23:34-INFO- Buyer function initiated for SOL 
+04/03/2023 05:23:35-INFO- Purchased 135.81980187 of SOL. 
