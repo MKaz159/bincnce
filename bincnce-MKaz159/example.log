@@ -1,22 +1,17 @@
-04/03/2023 05:22:59-WARNING- Connection pool is full, discarding connection: api.binance.com. Connection pool size: 10 
-04/03/2023 05:22:59-INFO- sorted stock dict created. 
-04/03/2023 05:23:00-INFO- The destination of coins is = ['XRP', 'ADA', 'DOT'] 
-04/03/2023 05:23:00-INFO- User owns ['BTC', 'ETH', 'BNB', 'XRP', 'SOL'] with targeted ['XRP', 'ADA', 'DOT']. Decided to sell ['BTC', 'ETH', 'BNB', 'SOL'] 
-04/03/2023 05:23:00-INFO- The destination of coins is = ['XRP', 'ADA', 'DOT'] 
-04/03/2023 05:23:00-INFO- Seller function initiated for BTC 
-04/03/2023 05:23:01-INFO- Sold 0.00794 of BTC 
-04/03/2023 05:23:01-INFO- Seller function initiated for ETH 
-04/03/2023 05:23:01-INFO- Seller function initiated for BNB 
-04/03/2023 05:23:01-INFO- Seller function initiated for SOL 
-04/03/2023 05:23:02-INFO- Sold 15.6 of SOL 
-04/03/2023 05:23:32-INFO- Buyer initiated with 543.27920750 
-04/03/2023 05:23:32-INFO- Total BUSD is 543.2792075 while having 4 coins. 135.819801875$ 
-04/03/2023 05:23:32-INFO- Preparing to buy individual stocks. Per coin 135.81980187 
-04/03/2023 05:23:32-INFO- Buyer function initiated for BTC 
-04/03/2023 05:23:33-INFO- Purchased 135.81980187 of BTC. 
-04/03/2023 05:23:33-INFO- Buyer function initiated for ETH 
-04/03/2023 05:23:34-INFO- Purchased 135.81980187 of ETH. 
-04/03/2023 05:23:34-INFO- Buyer function initiated for BNB 
-04/03/2023 05:23:34-INFO- Purchased 135.81980187 of BNB. 
-04/03/2023 05:23:34-INFO- Buyer function initiated for SOL 
-04/03/2023 05:23:35-INFO- Purchased 135.81980187 of SOL. 
+04/04/2023 05:28:22-WARNING- Connection pool is full, discarding connection: api.binance.com. Connection pool size: 10 
+04/04/2023 05:28:22-INFO- sorted stock dict created. 
+04/04/2023 05:28:22-INFO- The destination of coins is = ['DOGE', 'XRP', 'ADA'] 
+04/04/2023 05:28:22-INFO- User owns ['BNB', 'XRP', 'ADA', 'DOGE'] with targeted ['DOGE', 'XRP', 'ADA']. Decided to sell ['BNB'] 
+04/04/2023 05:28:22-INFO- The destination of coins is = ['DOGE', 'XRP', 'ADA'] 
+04/04/2023 05:28:22-INFO- Attempting to pass 0.43523214 to be sold  
+04/04/2023 05:28:22-INFO- Seller function initiated for BNB 
+04/04/2023 05:28:23-INFO- Sold 0.435 of BNB 
+04/04/2023 05:28:23-INFO- Buyer initiated with 135.28008450 
+04/04/2023 05:28:23-INFO- Total BUSD is 135.2800845 while having 3 coins. 45.09336149999999$ 
+04/04/2023 05:28:23-INFO- Preparing to buy individual stocks. Per coin 45.09336149 
+04/04/2023 05:28:23-INFO- Buyer function initiated for DOGE 
+04/04/2023 05:28:24-INFO- Purchased 45.09336149 of DOGE. 
+04/04/2023 05:28:24-INFO- Buyer function initiated for XRP 
+04/04/2023 05:28:24-INFO- Purchased 45.09336149 of XRP. 
+04/04/2023 05:28:24-INFO- Buyer function initiated for ADA 
+04/04/2023 05:28:24-INFO- Purchased 45.09336149 of ADA. 

@@ -83,14 +83,24 @@ class Stock:
     def Seller(self, test=True):
         logging.info(f'Seller function initiated for {self.symbol}')
 
+        info = client.get_symbol_info(self.trading_ticker)
+        filters = info['filters']
+        for filter in filters:
+            if filter['filterType'] == 'LOT_SIZE':
+                step_size = filter['stepSize']
+                if step_size == 1.0:
+                    modified_value = math.floor(self.asset)
+                else:
+                    modified_value = round(self.asset - (self.asset % float(step_size)), int(-math.log10(float(step_size))))
+                stepsize_asset = modified_value
         if not test:
             try:
                 print(f'mayday mayday real buy order initated ')
                 order = client.order_market_sell(recvWindow=59000,
                                                  symbol=self.trading_ticker,
-                                                 quantity=self.asset,
+                                                 quantity=stepsize_asset,
                                                  )
-                logging.info(f'Sold {self.asset} of {self.symbol}')
+                logging.info(f'Sold {stepsize_asset} of {self.symbol}')
                 return order
             except BinanceOrderMinAmountException:
                 logging.error(f'failed to place a selling for {self.trading_ticker} due to minimum amount.'
@@ -102,9 +112,9 @@ class Stock:
                     recvWindow=59000,
                     side=client.SIDE_SELL,
                     type=client.ORDER_TYPE_MARKET,
-                    quantity=self.asset,
+                    quantity=stepsize_asset,
                 )
-                logging.info(f'Sold {self.asset} of {self.symbol}')
+                logging.info(f'Sold {stepsize_asset} of {self.symbol}')
                 return order
             except BinanceAPIException as Expect:
                 logging.error(f'failed to place a selling for {self.trading_ticker} due to {Expect}.')
@@ -166,6 +176,7 @@ def Selling_outdated_stock(stock_dict: Dict[str, Stock], list_for_selling):
     for coin_to_sell in list_for_selling:
         seller_candidate = stock_dict.get(coin_to_sell)
         try:
+            logging.info(f'Attempting to pass {seller_candidate.asset} to be sold ')
             seller_candidate.Seller(test=False)
         except BinanceAPIException as execpt:
             print(f' Failed to initiate sell on {seller_candidate.symbol} with the {execpt}')
@@ -190,5 +201,5 @@ if __name__ == '__main__':
     list_of_destined_to_sell, filtered_owned_assets = Who_To_sell(list(stock_dict.values()))  # A list of symbols
     buy_target = Who_to_buy(list(stock_dict.values()))
     Selling_outdated_stock(stock_dict, list_of_destined_to_sell)
-    time.sleep(30)
+    #time.sleep(30)
     Buyer_new_destination(stock_dict, buy_target)
